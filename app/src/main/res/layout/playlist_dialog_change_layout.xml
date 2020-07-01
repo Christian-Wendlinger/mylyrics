@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/headerView"
+        android:layout_width="375dp"
+        android:layout_height="46dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="#0F53A5" />
+
+    <ImageView
+        android:id="@+id/musicIcon"
+        android:layout_width="35dp"
+        android:layout_height="36dp"
+        android:layout_alignStart="@+id/headerView"
+        android:layout_alignLeft="@+id/headerView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="4dp"
+        app:srcCompat="@drawable/ic_baseline_library_music_24" />
+
+    <TextView
+        android:id="@+id/addPlaylistLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/musicIcon"
+        android:layout_toRightOf="@+id/musicIcon"
+        android:text="@string/change_playlist"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/optionsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/musicIcon"
+        android:layout_alignStart="@+id/headerView"
+        android:layout_alignLeft="@+id/headerView"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="29dp"
+        android:text="@string/options"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/playlistPicture"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_below="@+id/optionsLabel"
+        android:layout_alignStart="@+id/headerView"
+        android:layout_alignLeft="@+id/headerView"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="11dp"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <ImageView
+        android:id="@+id/changePictureIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/playlistPicture"
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginBottom="-1dp"
+        android:layout_toEndOf="@+id/playlistPicture"
+        android:layout_toRightOf="@+id/playlistPicture"
+        app:srcCompat="@drawable/ic_baseline_create_24" />
+
+    <EditText
+        android:id="@+id/playlistNameTextField"
+        android:layout_width="247dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/headerView"
+        android:layout_alignRight="@+id/headerView"
+        android:layout_alignBottom="@+id/playlistPicture"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toEndOf="@+id/changePictureIcon"
+        android:layout_toRightOf="@+id/changePictureIcon"
+        android:ems="10"
+        android:hint="@string/playlist_hint"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/playlistNameTextField"
+        android:layout_alignEnd="@+id/playlistNameTextField"
+        android:layout_alignRight="@+id/playlistNameTextField"
+        android:layout_marginTop="-6dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:text="0/25"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textInputLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/playlistNameTextField"
+        android:layout_alignStart="@+id/playlistNameTextField"
+        android:layout_alignLeft="@+id/playlistNameTextField"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginBottom="-3dp"
+        android:text="@string/name_your_playlist"
+        android:textSize="12sp" />
+
+</RelativeLayout>

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">MyLyrics</string>
+    <string name="add_playlist">Add Playlist</string>
+    <string name="options">Options</string>
+    <string name="name_your_playlist">Name your Playlist</string>
+    <string name="playlist_hint">Playlist Name</string>
+    <string name="select_properties">Select Properties</string>
+    <string name="change_playlist">Change Playlist</string>
+    <string name="delete_song">Delete this Song?</string>
+    <string name="delete_song_content">You will lose all the information about the song. Do you want do delete it?</string>
+    <string name="filter">Filter</string>
+    <string name="artist">Artist</string>
+    <string name="album">Album</string>
+    <string name="add_to">Add To</string>
+    <string name="lyrics">Lyrics</string>
+    <string name="information">Information</string>
+    <string name="placeholder_name">Test</string>
 </resources>
