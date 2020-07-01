@@ -80,7 +80,7 @@ class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel
             // notify user
             Toast.makeText(
                 itemView.itemView.context,
-                "Deleted Song " + itemView.itemView.songName.text,
+                "Deleted " + itemView.itemView.songName.text,
                 Toast.LENGTH_SHORT
             ).show()
         }
