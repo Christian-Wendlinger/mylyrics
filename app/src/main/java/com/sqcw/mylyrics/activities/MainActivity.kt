@@ -6,18 +6,31 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sqcw.mylyrics.PlaylistModel
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.adapters.PlaylistRecycleViewAdapter
 import com.sqcw.mylyrics.initializeAppBar
+import com.sqcw.mylyrics.models.PlaylistModel
+import com.sqcw.mylyrics.models.SongInformationModel
+import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
 
 class MainActivity : AppCompatActivity() {
     private var names = mutableListOf(
-        PlaylistModel(1, "Nummer 1", mutableListOf("")),
-        PlaylistModel(2, "Nummer 2", mutableListOf("")),
-        PlaylistModel(3, "Nummer 3", mutableListOf(""))
+        PlaylistModel(
+            1,
+            "Hip Hop",
+            mutableListOf(
+                SongModel(1, "Song 1", SongInformationModel("David Guetta", "Yeah yeah")),
+                SongModel(1, "Song 2", SongInformationModel("David Bretter", "Yeah yeah 2"))
+            )
+        ),
+        PlaylistModel(
+            2,
+            "Rock",
+            mutableListOf(SongModel(1, "Song 1", SongInformationModel("David Guetta", "Yeah yeah")))
+        ),
+        PlaylistModel(3, "Pop", mutableListOf())
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +44,9 @@ class MainActivity : AppCompatActivity() {
             initializeCreatePlaylistDialog()
         }
 
-        rvPlaylists.layoutManager = LinearLayoutManager(this)
-        rvPlaylists.adapter = PlaylistRecycleViewAdapter(names)
-        rvPlaylists.adapter!!.notifyDataSetChanged()
+        rvSongsInPlaylist.layoutManager = LinearLayoutManager(this)
+        rvSongsInPlaylist.adapter = PlaylistRecycleViewAdapter(names)
+        rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
     }
 
     // create the Code for the dialog to add a playlist
@@ -66,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             )
                 .show()
-            rvPlaylists.adapter!!.notifyDataSetChanged()
+            rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
         }
     }
 }

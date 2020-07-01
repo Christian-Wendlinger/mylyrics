@@ -14,4 +14,5 @@ fun initializeAppBar(appCompatActivity: AppCompatActivity, title: String, back: 
 
     // enable back Button
     if (back) appCompatActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
 }

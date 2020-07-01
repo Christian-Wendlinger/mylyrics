@@ -2,6 +2,7 @@ package com.sqcw.mylyrics.adapters
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import com.sqcw.mylyrics.PlaylistModel
 import com.sqcw.mylyrics.R
+import com.sqcw.mylyrics.activities.SongsInPlaylistActivity
+import com.sqcw.mylyrics.models.PlaylistModel
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
 import kotlinx.android.synthetic.main.playlist_layout.view.*
-import kotlinx.android.synthetic.main.song_layout.view.playlistName
+import kotlinx.android.synthetic.main.song_layout.view.songName
+import java.io.Serializable
 
 class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,6 +24,13 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
+                val intent = Intent(itemView.context, SongsInPlaylistActivity::class.java)
+                // put necessary values
+                intent.putExtra("playlist_name", playlists[adapterPosition].name)
+                intent.putExtra("songs", playlists[adapterPosition].songs as Serializable)
+
+                //navigate
+                itemView.context.startActivity(intent)
             }
 
             itemView.options.setOnClickListener {
@@ -39,7 +49,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.playlistName.text = playlists[position].name
+        holder.itemView.songName.text = playlists[position].name
     }
 
 
@@ -69,6 +79,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
         // save to database
 
         // listeners
+        //delete playlist
         customDialog.getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
             playlists.removeAt(itemView.adapterPosition)
             notifyDataSetChanged()
@@ -77,7 +88,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             // notify user
             Toast.makeText(
                 itemView.itemView.context,
-                "Deleted Playlist " + itemView.itemView.playlistName.text,
+                "Deleted Playlist " + itemView.itemView.songName.text,
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -93,7 +104,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             // change values
             playlists[itemView.adapterPosition].name =
                 customDialog.playlistNameTextField!!.text.toString()
-            itemView.itemView.playlistName.text = playlists[itemView.adapterPosition].name
+            itemView.itemView.songName.text = playlists[itemView.adapterPosition].name
             notifyDataSetChanged()
             customDialog.dismiss()
 
@@ -102,7 +113,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             // notify user
             Toast.makeText(
                 itemView.itemView.context,
-                "Changed Playlist to " + itemView.itemView.playlistName.text,
+                "Changed Playlist to " + itemView.itemView.songName.text,
                 Toast.LENGTH_SHORT
             ).show()
         }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.initializeAppBar
+import kotlinx.android.synthetic.main.activity_add_song_layout.*
 
 class AddSongActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,6 +14,17 @@ class AddSongActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_song_layout)
 
         initializeAppBar(this, "Add Song", true)
+
+        //open filter
+        filterIcon.setOnClickListener {
+            initializeFilterDialog()
+        }
+    }
+
+    // back button functionality
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun initializeFilterDialog() {
@@ -29,6 +41,21 @@ class AddSongActivity : AppCompatActivity() {
         val customDialog = dialog.create()
 
         customDialog.show()
+
+        // apply
+        customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        // cancel
+        customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        // reset
+        customDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+            customDialog.dismiss()
+        }
     }
 
     private fun initializeAddToDialog() {
