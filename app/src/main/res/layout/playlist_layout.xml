@@ -12,8 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="16dp"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
@@ -35,16 +35,15 @@
 
     <ImageView
         android:id="@+id/options"
-        android:layout_width="33dp"
-        android:layout_height="23dp"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
         android:layout_alignBottom="@+id/picture"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
+        android:layout_marginBottom="17dp"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 </RelativeLayout>

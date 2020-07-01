@@ -94,8 +94,7 @@
         android:layout_toEndOf="@+id/changePictureIcon"
         android:layout_toRightOf="@+id/changePictureIcon"
         android:ems="10"
-        android:hint="@string/playlist_hint"
-        android:inputType="textPersonName" />
+        android:hint="@string/playlist_hint" />
 
     <TextView
         android:id="@+id/counter"
