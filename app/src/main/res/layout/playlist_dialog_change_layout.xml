@@ -1,125 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout9"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/headerView"
-        android:layout_width="375dp"
+        android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:background="#0F53A5" />
+        android:background="#0F53A5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/musicIcon"
         android:layout_width="35dp"
-        android:layout_height="36dp"
-        android:layout_alignStart="@+id/headerView"
-        android:layout_alignLeft="@+id/headerView"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerView"
+        app:layout_constraintStart_toStartOf="@+id/headerView"
+        app:layout_constraintTop_toTopOf="@+id/headerView"
         app:srcCompat="@drawable/ic_baseline_library_music_24" />
 
     <TextView
         android:id="@+id/addPlaylistLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="9dp"
-        android:layout_toEndOf="@+id/musicIcon"
-        android:layout_toRightOf="@+id/musicIcon"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
         android:text="@string/change_playlist"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/headerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/musicIcon"
+        app:layout_constraintTop_toTopOf="@+id/headerView" />
 
     <TextView
         android:id="@+id/optionsLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/musicIcon"
-        android:layout_alignStart="@+id/headerView"
-        android:layout_alignLeft="@+id/headerView"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
         android:text="@string/options"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerView" />
 
     <ImageView
         android:id="@+id/playlistPicture"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
-        android:layout_below="@+id/optionsLabel"
-        android:layout_alignStart="@+id/headerView"
-        android:layout_alignLeft="@+id/headerView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/optionsLabel"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:id="@+id/changePictureIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/playlistPicture"
-        android:layout_marginStart="-1dp"
-        android:layout_marginLeft="-1dp"
-        android:layout_marginBottom="-1dp"
-        android:layout_toEndOf="@+id/playlistPicture"
-        android:layout_toRightOf="@+id/playlistPicture"
+        app:layout_constraintBottom_toBottomOf="@+id/playlistPicture"
+        app:layout_constraintStart_toEndOf="@+id/playlistPicture"
         app:srcCompat="@drawable/ic_baseline_create_24" />
 
     <EditText
         android:id="@+id/playlistNameTextField"
-        android:layout_width="247dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/headerView"
-        android:layout_alignRight="@+id/headerView"
-        android:layout_alignBottom="@+id/playlistPicture"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toEndOf="@+id/changePictureIcon"
-        android:layout_toRightOf="@+id/changePictureIcon"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
         android:ems="10"
-        android:hint="@string/playlist_hint" />
+        android:hint="@string/playlist_hint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/playlistPicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/changePictureIcon"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLabel" />
 
     <TextView
         android:id="@+id/counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/playlistNameTextField"
-        android:layout_alignEnd="@+id/playlistNameTextField"
-        android:layout_alignRight="@+id/playlistNameTextField"
-        android:layout_marginTop="-6dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
         android:text="0/25"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/playlistNameTextField"
+        app:layout_constraintTop_toBottomOf="@+id/playlistNameTextField" />
 
     <TextView
         android:id="@+id/textInputLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/playlistNameTextField"
-        android:layout_alignStart="@+id/playlistNameTextField"
-        android:layout_alignLeft="@+id/playlistNameTextField"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginBottom="-3dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="1dp"
         android:text="@string/name_your_playlist"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/playlistNameTextField"
+        app:layout_constraintEnd_toEndOf="@+id/playlistNameTextField"
+        app:layout_constraintStart_toStartOf="@+id/playlistNameTextField"
+        app:layout_constraintTop_toBottomOf="@+id/optionsLabel" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

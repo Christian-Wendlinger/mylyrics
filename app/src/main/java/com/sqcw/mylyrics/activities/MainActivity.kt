@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.adapters.PlaylistRecycleViewAdapter
@@ -80,6 +81,19 @@ class MainActivity : AppCompatActivity() {
             )
                 .show()
             rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
+        }
+
+        // parse Input length
+        customDialog.playlistNameTextField.doOnTextChanged { text, start, count, after ->
+            if (text!!.length <= 25) customDialog.counter.text = text.length.toString() + "/25"
+            else {
+                // cut Text
+                customDialog.playlistNameTextField.setText(
+                    text.toString().subSequence(0, 25).toString()
+                )
+                //position cursor
+                customDialog.playlistNameTextField.setSelection(25)
+            }
         }
     }
 }
