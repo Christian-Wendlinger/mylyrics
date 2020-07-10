@@ -4,13 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.adapters.SongsInPlaylistRecycleViewAdapter
+import com.sqcw.mylyrics.currentSongs
 import com.sqcw.mylyrics.initializeAppBar
-import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class SongsInPlaylistActivity : AppCompatActivity() {
+    private val db = DatabaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +25,11 @@ class SongsInPlaylistActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // read song data for playlists
         rvSongsInPlaylist.layoutManager = LinearLayoutManager(this)
+        currentSongs = db.getSongsOfPlaylist(intent.extras!!["playlist_id"].toString())
         rvSongsInPlaylist.adapter =
-            SongsInPlaylistRecycleViewAdapter(intent.getSerializableExtra("songs") as MutableList<SongModel>)
-        rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
+            SongsInPlaylistRecycleViewAdapter(currentSongs)
     }
 
     // back button functionality

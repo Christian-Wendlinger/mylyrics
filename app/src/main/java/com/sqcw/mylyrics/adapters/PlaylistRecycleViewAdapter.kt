@@ -10,13 +10,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
+import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.activities.SongsInPlaylistActivity
 import com.sqcw.mylyrics.models.PlaylistModel
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
 import kotlinx.android.synthetic.main.playlist_layout.view.*
 import kotlinx.android.synthetic.main.song_layout.view.songName
-import java.io.Serializable
 
 class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,8 +26,8 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, SongsInPlaylistActivity::class.java)
                 // put necessary values
+                intent.putExtra("playlist_id", playlists[adapterPosition].id)
                 intent.putExtra("playlist_name", playlists[adapterPosition].name)
-                intent.putExtra("songs", playlists[adapterPosition].songs as Serializable)
 
                 //navigate
                 itemView.context.startActivity(intent)
@@ -76,14 +76,12 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
         customDialog.counter!!.text =
             playlists[itemView.adapterPosition].name.length.toString() + "/25"
 
-        // save to database
-
         // listeners
         //delete playlist
         customDialog.getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
-            playlists.removeAt(itemView.adapterPosition)
-            notifyDataSetChanged()
-            customDialog.dismiss()
+            // delete in database
+            val db = DatabaseHelper(itemView.itemView.context)
+            db.deletePlaylist(playlists[itemView.adapterPosition].id.toString())
 
             // notify user
             Toast.makeText(
@@ -91,31 +89,38 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
                 "Deleted Playlist " + itemView.itemView.songName.text,
                 Toast.LENGTH_SHORT
             ).show()
+
+            playlists = db.readPlaylists()
+            notifyDataSetChanged()
+            customDialog.dismiss()
         }
 
         // cancel dialog
         customDialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
-            notifyDataSetChanged()
             customDialog.dismiss()
         }
 
         // change playlist name
         customDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
-            // change values
-            playlists[itemView.adapterPosition].name =
+            // save to database
+            val db = DatabaseHelper(itemView.itemView.context)
+            db.updatePlaylistName(
+                playlists[itemView.adapterPosition].id.toString(),
                 customDialog.playlistNameTextField!!.text.toString()
-            itemView.itemView.songName.text = playlists[itemView.adapterPosition].name
-            notifyDataSetChanged()
-            customDialog.dismiss()
-
-            //save to database
+            )
 
             // notify user
             Toast.makeText(
                 itemView.itemView.context,
-                "Changed Playlist to " + itemView.itemView.songName.text,
+                "Changed Playlist to " + customDialog.playlistNameTextField!!.text.toString(),
                 Toast.LENGTH_SHORT
             ).show()
+
+            customDialog.dismiss()
+
+            // read new data
+            playlists = db.readPlaylists()
+            notifyDataSetChanged()
         }
 
         // parse Input length

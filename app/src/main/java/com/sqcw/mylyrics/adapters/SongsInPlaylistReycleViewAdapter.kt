@@ -13,7 +13,6 @@ import com.sqcw.mylyrics.activities.SongInformationActivity
 import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.playlist_layout.view.songName
 import kotlinx.android.synthetic.main.song_layout.view.*
-import java.io.Serializable
 
 class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,7 +23,6 @@ class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel
                 val intent = Intent(itemView.context, SongInformationActivity::class.java)
                 // put necessary values
                 intent.putExtra("song_name", songs[adapterPosition].name)
-                intent.putExtra("data", songs[adapterPosition].data as Serializable)
 
                 //navigate
                 itemView.context.startActivity(intent)

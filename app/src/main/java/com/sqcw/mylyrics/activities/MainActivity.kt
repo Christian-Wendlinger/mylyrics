@@ -7,32 +7,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.adapters.PlaylistRecycleViewAdapter
 import com.sqcw.mylyrics.initializeAppBar
-import com.sqcw.mylyrics.models.PlaylistModel
-import com.sqcw.mylyrics.models.SongInformationModel
-import com.sqcw.mylyrics.models.SongModel
+import com.sqcw.mylyrics.playlists
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
 
 class MainActivity : AppCompatActivity() {
-    private var names = mutableListOf(
-        PlaylistModel(
-            1,
-            "Hip Hop",
-            mutableListOf(
-                SongModel(1, "Song 1", SongInformationModel("David Guetta", "Yeah yeah")),
-                SongModel(1, "Song 2", SongInformationModel("David Bretter", "Yeah yeah 2"))
-            )
-        ),
-        PlaylistModel(
-            2,
-            "Rock",
-            mutableListOf(SongModel(1, "Song 1", SongInformationModel("David Guetta", "Yeah yeah")))
-        ),
-        PlaylistModel(3, "Pop", mutableListOf())
-    )
+    private val db = DatabaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +29,10 @@ class MainActivity : AppCompatActivity() {
             initializeCreatePlaylistDialog()
         }
 
+        // setup playlists
         rvSongsInPlaylist.layoutManager = LinearLayoutManager(this)
-        rvSongsInPlaylist.adapter = PlaylistRecycleViewAdapter(names)
-        rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
+        playlists = db.readPlaylists()
+        rvSongsInPlaylist.adapter = PlaylistRecycleViewAdapter(playlists)
     }
 
     // create the Code for the dialog to add a playlist
@@ -66,21 +51,20 @@ class MainActivity : AppCompatActivity() {
         customDialog.show()
 
         customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            names.add(
-                PlaylistModel(
-                    1,
-                    customDialog.playlistNameTextField.text.toString(),
-                    mutableListOf()
-                )
-            )
+
+            // write new Playlist to database and read new playlists
+            db.addPlaylist(customDialog.playlistNameTextField.text.toString())
+            playlists = db.readPlaylists()
+
             customDialog.dismiss()
             Toast.makeText(
                 this,
-                "Created Playlist " + names[names.size - 1].name,
+                "Created Playlist " + playlists[playlists.size - 1].name,
                 Toast.LENGTH_SHORT
             )
                 .show()
-            rvSongsInPlaylist.adapter!!.notifyDataSetChanged()
+
+            rvSongsInPlaylist.adapter = PlaylistRecycleViewAdapter(playlists)
         }
 
         // parse Input length

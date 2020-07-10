@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.initializeAppBar
-import com.sqcw.mylyrics.models.SongInformationModel
+import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.activity_song_information.*
 
 class SongInformationActivity : AppCompatActivity() {
@@ -15,9 +15,7 @@ class SongInformationActivity : AppCompatActivity() {
 
         initializeAppBar(this, intent.extras!!["song_name"] as String, true)
 
-        val data = intent.getSerializableExtra("data") as SongInformationModel
-        lyricsText.text = data.lyrics
-
+        val data = SongModel(1, "", "", "", "")
         // change text
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
