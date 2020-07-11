@@ -42,15 +42,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "MyLyrics.db"
     }
 
     fun addPlaylist(name: String) {
-        val db = this.writableDatabase
+        val db = writableDatabase
         val contentValues = ContentValues()
         contentValues.put("name", name)
         db.insert("playlists", null, contentValues)
     }
 
     fun deletePlaylist(id: String) {
-        val db = this.writableDatabase
+        val db = writableDatabase
         db.delete("playlists", "id = ?", arrayOf(id))
+        db.delete("matching", "playlistId = ?", arrayOf(id))
     }
 
     fun updatePlaylistName(id: String, name: String) {
@@ -75,8 +76,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "MyLyrics.db"
         return tmp
     }
 
-    fun addSongToPlaylist(playlistId: String, songId: String) {
-        val db = this.writableDatabase
+    fun addSongToPlaylist(playlistId: Int, songId: Int) {
+        val db = writableDatabase
         val contentValues = ContentValues()
         contentValues.put("playlistId", playlistId)
         contentValues.put("songId", songId)
@@ -99,15 +100,54 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "MyLyrics.db"
         db.insert("songs", null, contentValues)
     }
 
-    fun getSongsOfPlaylist(playlistId: String): MutableList<SongModel> {
+    fun fetchSongs(): MutableList<SongModel> {
         val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT r.id, r.name, r.artist, r.album, r.lyrics FROM matching l INNER JOIN songs r ON l.songId = r.id WHERE r.id = ?",
-            arrayOf(playlistId)
-        )
+
+        // execute query
+        val cursor =
+            if (query == "") {
+                if (artist == "" && album == "") {
+                    db.rawQuery("SELECT * FROM songs", null)
+                } else if (artist != "" && album == "") {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE artist LIKE ?",
+                        arrayOf("%$artist%")
+                    )
+                } else if (artist == "" && album != "") {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE album LIKE ?",
+                        arrayOf("%$album%")
+                    )
+                } else {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE artist LIKE ? AND album LIKE ?",
+                        arrayOf("%$artist%", "%$album%")
+                    )
+                }
+            } else {
+                if (artist == "" && album == "") {
+                    db.rawQuery("SELECT * FROM songs WHERE name LIKE ?", arrayOf("%$query%"))
+                } else if (artist != "" && album == "") {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE name LIKE ? AND artist LIKE ?",
+                        arrayOf("%$query%", "%$artist%")
+                    )
+                } else if (artist == "" && album != "") {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE name LIKE ? AND album LIKE ?",
+                        arrayOf("%$query%", "%$album%")
+                    )
+                } else {
+                    db.rawQuery(
+                        "SELECT * FROM songs WHERE name LIKE ? AND artist LIKE ? AND album LIKE ?",
+                        arrayOf("%$query%", "%$artist%", "%$album%")
+                    )
+                }
+            }
 
         val tmp = mutableListOf<SongModel>()
 
+        // fill data
         while (cursor.moveToNext()) {
             tmp.add(
                 SongModel(
@@ -120,6 +160,43 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "MyLyrics.db"
             )
         }
         cursor.close()
+
+        return tmp
+    }
+
+    fun getSongsOfPlaylist(playlistId: String): MutableList<SongModel> {
+        val db = readableDatabase
+
+        // fetch song Ids
+        val idCursor = db.rawQuery(
+            "SELECT songId FROM matching WHERE playlistId = ?",
+            arrayOf(playlistId)
+        )
+
+        val tmp = mutableListOf<SongModel>()
+
+        // iterate over every songId
+        while (idCursor.moveToNext()) {
+            val songCursor = db.rawQuery(
+                "SELECT * FROM songs WHERE id = ?",
+                arrayOf(idCursor.getInt(0).toString())
+            )
+
+            // iterate over every song (should be 1 every time)
+            while (songCursor.moveToNext()) {
+                tmp.add(
+                    SongModel(
+                        songCursor.getInt(0),
+                        songCursor.getString(1),
+                        songCursor.getString(2),
+                        songCursor.getString(3),
+                        songCursor.getString(4)
+                    )
+                )
+            }
+            songCursor.close()
+        }
+        idCursor.close()
 
         return tmp
     }

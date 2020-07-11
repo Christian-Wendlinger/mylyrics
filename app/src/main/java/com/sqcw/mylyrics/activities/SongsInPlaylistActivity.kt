@@ -18,15 +18,24 @@ class SongsInPlaylistActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_songs_in_playlist)
 
-        initializeAppBar(this, intent.extras!!["playlist_name"] as String, true)
+        val playlistId = intent.extras!!["playlist_name"] as String
+        initializeAppBar(this, playlistId, true)
 
         btnAddSong.setOnClickListener {
             val intent = Intent(this, AddSongActivity::class.java)
+            intent.putExtra("playlist_id", playlistId)
             startActivity(intent)
         }
 
         // read song data for playlists
         rvSongsInPlaylist.layoutManager = LinearLayoutManager(this)
+        currentSongs = db.getSongsOfPlaylist(intent.extras!!["playlist_id"].toString())
+        rvSongsInPlaylist.adapter =
+            SongsInPlaylistRecycleViewAdapter(currentSongs)
+    }
+
+    override fun onResume() {
+        super.onResume()
         currentSongs = db.getSongsOfPlaylist(intent.extras!!["playlist_id"].toString())
         rvSongsInPlaylist.adapter =
             SongsInPlaylistRecycleViewAdapter(currentSongs)

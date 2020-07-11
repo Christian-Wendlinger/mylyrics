@@ -4,19 +4,16 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sqcw.mylyrics.R
-import com.sqcw.mylyrics.adapters.SongsInAddSongRecyvleViewAdapter
-import com.sqcw.mylyrics.initializeAppBar
-import com.sqcw.mylyrics.models.SongModel
+import com.sqcw.mylyrics.*
+import com.sqcw.mylyrics.adapters.SongsInAddSongRecycleViewAdapter
 import kotlinx.android.synthetic.main.activity_add_song_layout.*
-
+import kotlinx.android.synthetic.main.filter_dialog_layout.*
 
 class AddSongActivity : AppCompatActivity() {
-    private var names = mutableListOf(
-        SongModel(1, "Song 1", "", "", ""),
-        SongModel(2, "Song 2", "", "", "")
-    )
+
+    private val db = DatabaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,22 +21,17 @@ class AddSongActivity : AppCompatActivity() {
 
         initializeAppBar(this, "Add Song", true)
 
-        // click search
-        searchIcon.setOnClickListener {
-
-            var foundnames = mutableListOf<SongModel>()
-
-            val iterator = names.listIterator()
-            for (item in iterator) {
-                // TODO vergleich mit Datenbank
-                if (item.name == searchText.text.toString()) {
-                    foundnames.add(item)
-                }
-            }
-            rvSongs.layoutManager = LinearLayoutManager(this)
-            rvSongs.adapter = SongsInAddSongRecyvleViewAdapter(foundnames)
-            rvSongs.adapter!!.notifyDataSetChanged()
+        // search on text change
+        searchText.doOnTextChanged { text, start, count, after ->
+            query = text.toString()
+            queriedSongs = db.fetchSongs()
+            rvSongs.adapter = SongsInAddSongRecycleViewAdapter(queriedSongs)
         }
+
+        // initialize the recyclerview
+        rvSongs.layoutManager = LinearLayoutManager(this)
+        queriedSongs = db.fetchSongs()
+        rvSongs.adapter = SongsInAddSongRecycleViewAdapter(queriedSongs)
 
         //open filter
         filterIcon.setOnClickListener {
@@ -68,8 +60,21 @@ class AddSongActivity : AppCompatActivity() {
 
         customDialog.show()
 
+        // set current values
+        customDialog.artistInput.setText(artist)
+        customDialog.albumInput.setText(album)
+
+
         // apply
         customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            //set new values
+            artist = customDialog.artistInput.text.toString()
+            album = customDialog.albumInput.text.toString()
+
+            //query songs
+            queriedSongs = db.fetchSongs()
+            rvSongs.adapter = SongsInAddSongRecycleViewAdapter(queriedSongs)
+
             customDialog.dismiss()
         }
 
@@ -80,22 +85,15 @@ class AddSongActivity : AppCompatActivity() {
 
         // reset
         customDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+            // reset values
+            artist = ""
+            album = ""
+
+            // query songs
+            queriedSongs = db.fetchSongs()
+            rvSongs.adapter = SongsInAddSongRecycleViewAdapter(queriedSongs)
+
             customDialog.dismiss()
         }
-    }
-
-    private fun initializeAddToDialog() {
-        val dialog = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.add_to_dialog_layout, null)
-
-        dialog.setView(dialogView)
-        dialog.setCancelable(false)
-
-        //set buttons
-        dialog.setPositiveButton("apply") { dialogInterface: DialogInterface, i: Int -> }
-        dialog.setNegativeButton("cancel") { dialogInterface: DialogInterface, i: Int -> }
-        val customDialog = dialog.create()
-
-        customDialog.show()
     }
 }

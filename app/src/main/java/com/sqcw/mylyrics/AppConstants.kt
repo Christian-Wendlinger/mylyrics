@@ -8,6 +8,12 @@ import kotlinx.android.synthetic.main.appbar_layout.*
 
 var playlists = mutableListOf<PlaylistModel>()
 var currentSongs = mutableListOf<SongModel>()
+var queriedSongs = mutableListOf<SongModel>()
+var artist = ""
+var album = ""
+var query = ""
+var addToPlaylists = mutableListOf<Int>()
+var currentSongId = 0
 
 fun initializeAppBar(appCompatActivity: AppCompatActivity, title: String, back: Boolean) {
     //set up the action bar

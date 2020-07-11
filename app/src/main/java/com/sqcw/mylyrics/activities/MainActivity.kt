@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.adapters.PlaylistRecycleViewAdapter
+import com.sqcw.mylyrics.exampledata.songs
 import com.sqcw.mylyrics.initializeAppBar
 import com.sqcw.mylyrics.playlists
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity() {
         rvSongsInPlaylist.layoutManager = LinearLayoutManager(this)
         playlists = db.readPlaylists()
         rvSongsInPlaylist.adapter = PlaylistRecycleViewAdapter(playlists)
+
+        // fill example songs into database if database if empty
+        val testQuery = db.fetchSongs()
+        if (testQuery.isEmpty()) {
+            for (song in songs) {
+                db.newSong(song.name, song.artist, song.album, song.lyrics)
+            }
+        }
     }
 
     // create the Code for the dialog to add a playlist

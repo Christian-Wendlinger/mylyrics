@@ -14,11 +14,12 @@ import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.activities.SongsInPlaylistActivity
 import com.sqcw.mylyrics.models.PlaylistModel
+import com.sqcw.mylyrics.playlists
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
 import kotlinx.android.synthetic.main.playlist_layout.view.*
 import kotlinx.android.synthetic.main.song_layout.view.songName
 
-class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistModel>) :
+class PlaylistRecycleViewAdapter(private var playlistsInternal: MutableList<PlaylistModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,8 +27,8 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, SongsInPlaylistActivity::class.java)
                 // put necessary values
-                intent.putExtra("playlist_id", playlists[adapterPosition].id)
-                intent.putExtra("playlist_name", playlists[adapterPosition].name)
+                intent.putExtra("playlist_id", playlistsInternal[adapterPosition].id)
+                intent.putExtra("playlist_name", playlistsInternal[adapterPosition].name)
 
                 //navigate
                 itemView.context.startActivity(intent)
@@ -45,11 +46,11 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
     }
 
     override fun getItemCount(): Int {
-        return playlists.size
+        return playlistsInternal.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.songName.text = playlists[position].name
+        holder.itemView.songName.text = playlistsInternal[position].name
     }
 
 
@@ -71,17 +72,17 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
         customDialog.show()
 
         // set Playlist name in Textfield
-        customDialog.playlistNameTextField!!.setText(playlists[itemView.adapterPosition].name)
+        customDialog.playlistNameTextField!!.setText(playlistsInternal[itemView.adapterPosition].name)
         // set char counter
         customDialog.counter!!.text =
-            playlists[itemView.adapterPosition].name.length.toString() + "/25"
+            playlistsInternal[itemView.adapterPosition].name.length.toString() + "/25"
 
         // listeners
         //delete playlist
         customDialog.getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
             // delete in database
             val db = DatabaseHelper(itemView.itemView.context)
-            db.deletePlaylist(playlists[itemView.adapterPosition].id.toString())
+            db.deletePlaylist(playlistsInternal[itemView.adapterPosition].id.toString())
 
             // notify user
             Toast.makeText(
@@ -91,6 +92,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             ).show()
 
             playlists = db.readPlaylists()
+            playlistsInternal = playlists
             notifyDataSetChanged()
             customDialog.dismiss()
         }
@@ -105,7 +107,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
             // save to database
             val db = DatabaseHelper(itemView.itemView.context)
             db.updatePlaylistName(
-                playlists[itemView.adapterPosition].id.toString(),
+                playlistsInternal[itemView.adapterPosition].id.toString(),
                 customDialog.playlistNameTextField!!.text.toString()
             )
 
@@ -120,6 +122,7 @@ class PlaylistRecycleViewAdapter(private var playlists: MutableList<PlaylistMode
 
             // read new data
             playlists = db.readPlaylists()
+            playlistsInternal = playlists
             notifyDataSetChanged()
         }
 

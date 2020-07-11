@@ -66,7 +66,6 @@ class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel
         // cancel listener
         customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
             customDialog.dismiss()
-            notifyDataSetChanged()
         }
 
         // delete button
