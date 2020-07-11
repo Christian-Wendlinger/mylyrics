@@ -26,6 +26,9 @@ class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel
                 val intent = Intent(itemView.context, SongInformationActivity::class.java)
                 // put necessary values
                 intent.putExtra("song_name", songs[adapterPosition].name)
+                intent.putExtra("artist", songs[adapterPosition].artist)
+                intent.putExtra("album", songs[adapterPosition].album)
+                intent.putExtra("lyrics", songs[adapterPosition].lyrics)
 
                 //navigate
                 itemView.context.startActivity(intent)

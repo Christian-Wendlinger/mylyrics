@@ -2,6 +2,7 @@ package com.sqcw.mylyrics.adapters
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sqcw.mylyrics.*
+import com.sqcw.mylyrics.activities.SongInformationActivity
 import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.add_to_dialog_layout.view.*
 import kotlinx.android.synthetic.main.song_toadd_layout.view.*
@@ -19,6 +21,15 @@ class SongsInAddSongRecycleViewAdapter(private var songs: MutableList<SongModel>
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
+                val intent = Intent(itemView.context, SongInformationActivity::class.java)
+                // put necessary values
+                intent.putExtra("song_name", songs[adapterPosition].name)
+                intent.putExtra("artist", songs[adapterPosition].artist)
+                intent.putExtra("album", songs[adapterPosition].album)
+                intent.putExtra("lyrics", songs[adapterPosition].lyrics)
+
+                //navigate
+                itemView.context.startActivity(intent)
             }
 
             itemView.add.setOnClickListener {
