@@ -14,6 +14,7 @@ var album = ""
 var query = ""
 var addToPlaylists = mutableListOf<Int>()
 var currentSongId = 0
+var currentPlaylistId = 0
 
 fun initializeAppBar(appCompatActivity: AppCompatActivity, title: String, back: Boolean) {
     //set up the action bar

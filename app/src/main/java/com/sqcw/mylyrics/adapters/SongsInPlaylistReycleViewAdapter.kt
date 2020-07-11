@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.activities.SongInformationActivity
+import com.sqcw.mylyrics.currentPlaylistId
+import com.sqcw.mylyrics.currentSongs
 import com.sqcw.mylyrics.models.SongModel
 import kotlinx.android.synthetic.main.playlist_layout.view.songName
 import kotlinx.android.synthetic.main.song_layout.view.*
@@ -70,7 +73,16 @@ class SongsInPlaylistRecycleViewAdapter(private var songs: MutableList<SongModel
 
         // delete button
         customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            songs.removeAt(itemView.adapterPosition)
+            // update data
+            val db = DatabaseHelper(itemView.itemView.context)
+            db.deleteSongFromPlaylist(
+                currentPlaylistId.toString(),
+                songs[itemView.adapterPosition].id.toString()
+            )
+            currentSongs = db.getSongsOfPlaylist(currentPlaylistId.toString())
+            songs = currentSongs
+
+            //show updates
             notifyDataSetChanged()
             customDialog.dismiss()
 

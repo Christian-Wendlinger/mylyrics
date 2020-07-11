@@ -1,5 +1,6 @@
 package com.sqcw.mylyrics.adapters
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sqcw.mylyrics.DatabaseHelper
 import com.sqcw.mylyrics.R
 import com.sqcw.mylyrics.activities.SongsInPlaylistActivity
+import com.sqcw.mylyrics.currentPlaylistId
 import com.sqcw.mylyrics.models.PlaylistModel
 import com.sqcw.mylyrics.playlists
 import kotlinx.android.synthetic.main.playlist_dialog_change_layout.*
@@ -25,6 +27,8 @@ class PlaylistRecycleViewAdapter(private var playlistsInternal: MutableList<Play
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
+                currentPlaylistId = playlistsInternal[adapterPosition].id
+
                 val intent = Intent(itemView.context, SongsInPlaylistActivity::class.java)
                 // put necessary values
                 intent.putExtra("playlist_id", playlistsInternal[adapterPosition].id)
@@ -55,6 +59,7 @@ class PlaylistRecycleViewAdapter(private var playlistsInternal: MutableList<Play
 
 
     // create the Code for the dialog to add a playlist
+    @SuppressLint("SetTextI18n")
     private fun initializeChangePlaylistDialog(itemView: ViewHolder) {
         val dialog = AlertDialog.Builder(itemView.itemView.context)
         val dialogView = LayoutInflater.from(itemView.itemView.context)
@@ -74,8 +79,7 @@ class PlaylistRecycleViewAdapter(private var playlistsInternal: MutableList<Play
         // set Playlist name in Textfield
         customDialog.playlistNameTextField!!.setText(playlistsInternal[itemView.adapterPosition].name)
         // set char counter
-        customDialog.counter!!.text =
-            playlistsInternal[itemView.adapterPosition].name.length.toString() + "/25"
+        customDialog.counter.text = "${playlistsInternal[itemView.adapterPosition].name.length}/25"
 
         // listeners
         //delete playlist
@@ -128,7 +132,7 @@ class PlaylistRecycleViewAdapter(private var playlistsInternal: MutableList<Play
 
         // parse Input length
         customDialog.playlistNameTextField.doOnTextChanged { text, start, count, after ->
-            if (text!!.length <= 25) customDialog.counter.text = text.length.toString() + "/25"
+            if (text!!.length <= 25) customDialog.counter.text = "${text.length}/25"
             else {
                 // cut Text
                 customDialog.playlistNameTextField.setText(
